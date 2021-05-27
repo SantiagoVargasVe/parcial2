@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { HomesList } from "../pages/homes-list/HomesList";
-import { Navbar } from "../components/nav/Navbar";
-import { IntlProvider } from "react-intl";
-import { LOCALES } from "../i18n/locales";
-import messages from "../i18n/messages";
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { HomesList } from '../pages/homes-list/HomesList'
+import { RoomsList } from '../pages/rooms-list/RoomsList'
+import { Navbar } from '../components/nav/Navbar'
+import { IntlProvider } from 'react-intl'
+import { LOCALES } from '../i18n/locales'
+import messages from '../i18n/messages'
 
 export const AppRouter = () => {
-  const [language, setLanguage] = useState(LOCALES.ENGLISH);
+  const [language, setLanguage] = useState(LOCALES.ENGLISH)
 
   return (
     <IntlProvider locale={language} messages={messages[language]}>
@@ -20,8 +21,15 @@ export const AppRouter = () => {
           <Route exact path="/homes">
             <HomesList />
           </Route>
+
+          <Route path="/homes/:homeId">
+            <RoomsList />
+          </Route>
+          <Route path="/homes/:homeId/:roomId">
+            <RoomsList />
+          </Route>
         </Switch>
       </Router>
     </IntlProvider>
-  );
-};
+  )
+}

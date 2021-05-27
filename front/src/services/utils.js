@@ -1,13 +1,16 @@
-const HOME_API = "/api/homes";
+const HOME_API = '/api/homes'
 
 const getHomes = async () => {
-  return fetch(HOME_API).then(getJSON);
-};
+  const response = await fetch(' http://localhost:3001/api/homes')
+  const data = await response.json()
 
-const getHomeById = async (id) => {
-  return fetch(`${HOME_API}/${id}`).then(getJSON);
-};
+  return data
+}
 
-const getJSON = (response) => response.json();
+const getRooms = async (id) => {
+  const response = await fetch(`http://localhost:3001/api/homes/${id}`)
+  const data = await response.json()
+  return data.rooms
+}
 
-export { getHomes, getHomeById };
+export { getHomes, getRooms }
