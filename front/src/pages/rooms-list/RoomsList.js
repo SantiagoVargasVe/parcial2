@@ -4,14 +4,28 @@ import Table from 'react-bootstrap/Table'
 import { getRooms } from '../../services/utils'
 import { useParams } from 'react-router-dom'
 import { RoomCard } from '../../components/card/RoomCard'
+import Consumption from '../../components/charts/Consumption'
 export const RoomsList = () => {
   const [rooms, setRooms] = useState([])
   const [devices, setDevices] = useState(undefined)
+  const [consumption, setConsumption] = useState(undefined)
+
   let { homeId } = useParams()
   useEffect(() => {
-    getRooms(homeId).then((data) => setRooms(data))
-    console.log('Se ejecuto el use Effect')
+    getRooms(homeId).then((data) => {
+      let temp_consumption = []
+      setRooms(data)
+      for (let i = 0; i < data.length; i++) {
+        let room = data[i]
+        temp_consumption.push({
+          room: room.name,
+          energy: room.powerUsage.value,
+        })
+      }
+      setConsumption(temp_consumption)
+    })
   }, [devices])
+
   const useHandleClick = (roomId) => {
     let temp_devices = []
     rooms.forEach((room) => {
@@ -21,8 +35,6 @@ export const RoomsList = () => {
     })
     setDevices(temp_devices)
   }
-
-  console.log(devices)
   return (
     <div className="container rooms">
       <h1>My rooms</h1>
@@ -72,6 +84,9 @@ export const RoomsList = () => {
         ) : (
           <p>No hay room id</p>
         )}
+      </div>
+      <div>
+        {consumption ? <Consumption data={consumption} /> : <p>No hay datos</p>}
       </div>
     </div>
   )
